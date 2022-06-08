@@ -15,10 +15,34 @@
         el: "#app",
         data: {
           name: "tangchao1",
+          firstName: "Foo",
+          lastName: "Bar",
         },
-        // template: "<h1>{{name}}</h1>",
-        render(h) {
-          return h("h1", "render-超人");
+        template: `
+        <div>
+          <h1>{{name}}</h1>
+        <h1>fullName=={{fullName}}</h1>
+          </div>
+
+        
+        `,
+        // render(h) {
+        //   return h("h1", "render-超人");
+        // },
+
+        computed: {
+          fullName: {
+            // getter
+            get() {
+              return this.firstName + "- " + this.lastName;
+            },
+            // setter
+            set(newValue) {
+              var names = newValue.split(" ");
+              this.firstName = names[0];
+              this.lastName = names[names.length - 1];
+            },
+          },
         },
       });
     </script>
