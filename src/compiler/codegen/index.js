@@ -52,7 +52,7 @@ export function generate (
     staticRenderFns: state.staticRenderFns
   }
 }
-
+// 判断当前 AST 元素节点的属性执行不同的代码生成函数
 export function genElement (el: ASTElement, state: CodegenState): string {
   if (el.parent) {
     el.pre = el.pre || el.parent.pre
