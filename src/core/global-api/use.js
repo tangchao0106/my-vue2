@@ -11,6 +11,7 @@ export function initUse(Vue: GlobalAPI) {
     }
 
     // additional parameters 把前一个入参截取掉
+    // 除了插件外的其他参数 Vue.use(MyPlugin, { someOption: true })
     const args = toArray(arguments, 1);
     args.unshift(this);
     if (typeof plugin.install === "function") {
