@@ -35,13 +35,13 @@ const sharedPropertyDefinition = {
   get: noop,
   set: noop,
 };
-
+// proxy(vm, `_data`, key);
 export function proxy(target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter() {
-    return this[sourceKey][key];
+    return this[sourceKey][key]; //this.name=this._data.name
   };
   sharedPropertyDefinition.set = function proxySetter(val) {
-    this[sourceKey][key] = val;
+    this[sourceKey][key] = val; //this._data.name
   };
   Object.defineProperty(target, key, sharedPropertyDefinition);
 }
@@ -199,7 +199,7 @@ function initComputed(vm: Component, computed: Object) {
 
     if (!isSSR) {
       // create internal watcher for the computed property.
-      //为每一个computed订制一个watcher,getter是函数体
+      //为每一个computed订制一个watcher,getter是函数体，lazy懒加载
       watchers[key] = new Watcher(
         vm,
         getter || noop,
@@ -212,6 +212,7 @@ function initComputed(vm: Component, computed: Object) {
     // component prototype. We only need to define computed properties defined
     // at instantiation here.
     if (!(key in vm)) {
+      //把计算属性的key，放在vm实例下，this.aa 同时创建自己的getset方法
       defineComputed(vm, key, userDef);
     } else if (process.env.NODE_ENV !== "production") {
       if (key in vm.$data) {
@@ -263,14 +264,14 @@ export function defineComputed(
   }
   Object.defineProperty(target, key, sharedPropertyDefinition);
 }
-
+//计算属性访问get方法时触发commputer的get方法返回值，给自己的watch收集依赖
 function createComputedGetter(key) {
   return function computedGetter() {
     const watcher = this._computedWatchers && this._computedWatchers[key];
     if (watcher) {
       if (watcher.dirty) {
         //收集该watcher的订阅。watcher里面使用到data里面响应式数据，触发对应数据的getter方法，添加watcher
-        watcher.evaluate(); //估计;评价;评估
+        watcher.evaluate(); //估计;评价;评估-触发一次后dirty设置为false
       }
       if (Dep.target) {
         //给自己的watch收集依赖
@@ -385,8 +386,9 @@ export function stateMixin(Vue: Class<Component>) {
     }
     options = options || {};
     options.user = true;
-    const watcher = new Watcher(vm, expOrFn, cb, options);
+    const watcher = new Watcher(vm, expOrFn, cb, options); //用户自己设置的watcher
     if (options.immediate) {
+      //立即执行添加watcher 入栈
       const info = `callback for immediate watcher "${watcher.expression}"`;
       pushTarget();
       invokeWithErrorHandling(cb, vm, [watcher.value], vm, info);

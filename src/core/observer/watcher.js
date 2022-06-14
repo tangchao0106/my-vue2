@@ -48,13 +48,13 @@ export default class Watcher {
     expOrFn: string | Function,
     cb: Function,
     options?: ?Object,
-    isRenderWatcher?: boolean
+    isRenderWatcher?: boolean //是否是渲染watcher
   ) {
     this.vm = vm;
     if (isRenderWatcher) {
       vm._watcher = this;
     }
-    vm._watchers.push(this);
+    vm._watchers.push(this); //在initState方法时定义[]
     // options 双非运算符，强制转换为布尔类型
     if (options) {
       this.deep = !!options.deep;
@@ -79,7 +79,7 @@ export default class Watcher {
     if (typeof expOrFn === "function") {
       this.getter = expOrFn;
     } else {
-      this.getter = parsePath(expOrFn);
+      this.getter = parsePath(expOrFn); //用户watcher时 传过来是字符串,转换为 getter=()=> vm['sex']
       if (!this.getter) {
         this.getter = noop;
         process.env.NODE_ENV !== "production" &&
@@ -91,6 +91,7 @@ export default class Watcher {
           );
       }
     }
+    // initComputed计算属性懒加载
     this.value = this.lazy ? undefined : this.get();
   }
 
@@ -129,6 +130,8 @@ export default class Watcher {
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id);
       this.newDeps.push(dep);
+      //保证dep不重复收集watch，如果页面上使用了多次属性
+
       if (!this.depIds.has(id)) {
         dep.addSub(this);
       }
@@ -167,6 +170,7 @@ export default class Watcher {
     } else if (this.sync) {
       this.run();
     } else {
+      //把watcher维护一个队列去更新
       queueWatcher(this);
     }
   }
