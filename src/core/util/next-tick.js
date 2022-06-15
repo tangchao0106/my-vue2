@@ -85,9 +85,19 @@ if (typeof Promise !== "undefined" && isNative(Promise)) {
     setTimeout(flushCallbacks, 0);
   };
 }
+// JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：
 
+// （1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+// （2）主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+// （3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+// （4）主线程不断重复上面的第三步。
 export function nextTick(cb?: Function, ctx?: Object) {
   let _resolve;
+  // 这里使用 callbacks 而不是直接在 nextTick 中执行回调函数的原因是保证在同一个 tick 内多次执行 nextTick，
+  // 不会开启多个异步任务，而把这些异步任务都压成一个同步任务，在下一个 tick 执行完毕。
   callbacks.push(() => {
     if (cb) {
       try {

@@ -113,8 +113,12 @@ export default class Watcher {
     } finally {
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
+      // 用户侦听器watcher a.b 改变b属性时a也要有通知
       if (this.deep) {
+        // 对一个对象做深层递归遍历，因为遍历过程中就是对一个子对象的访问，会触发它们的 getter 过程，这样就可以收集到依赖
         traverse(value);
+        // 观测了一个复杂对象，并且会改变对象内部深层某个值的时候也希望触发回调
+        // 要设置 deep 为 true，但是因为设置了 deep 后会执行 traverse 函数，会有一定的性能开销，所以一定要根据应用场景权衡是否要开启这个配置
       }
       popTarget();
       this.cleanupDeps();
@@ -178,9 +182,15 @@ export default class Watcher {
   /**
    * Scheduler job interface.
    * Will be called by the scheduler.
+   * 如果是渲染 watcher 它在执行 this.get() 方法求值的时候，会执行 getter 
+   * updateComponent = () => {
+      vm._update(vm._render(), hydrating)
+      当我们去修改组件相关的响应式数据的时候，会触发组件重新渲染的原因，接着就会重新执行 patch 的过程
+}
    */
   run() {
     if (this.active) {
+      // this.get() 得到它当前的值，然后旧值新值做判断
       const value = this.get();
       if (
         value !== this.value ||
@@ -194,6 +204,8 @@ export default class Watcher {
         const oldValue = this.value;
         this.value = value;
         if (this.user) {
+          // 函数执行的时候会把第一个和第二个参数传入新值 value 和旧值 oldValue，
+          // 这就是当我们添加自定义 watcher 的时候能在回调函数的参数中拿到新旧值的原因。
           const info = `callback for watcher "${this.expression}"`;
           invokeWithErrorHandling(
             this.cb,

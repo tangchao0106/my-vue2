@@ -30,11 +30,14 @@ export function initMixin(Vue: Class<Component>) {
     vm._isVue = true;
     // merge options
     if (options && options._isComponent) {
+      //  createElement 调用时如果options有组件，则解析组件，1extend方法返回构造函数-2 注册组件钩子init方法-3返回vnode
+      // patch的时候触发init钩子，标记_isComponent 为 true 表示它是一个组件 继续子组件$mount。循环，子组件的实例化实际上就是在这个时机执行，
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
       initInternalComponent(vm, options);
     } else {
+      // 把 Vue 构造函数的 options 和用户传入的 options 做一层合并，到 vm.$options 上。
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
