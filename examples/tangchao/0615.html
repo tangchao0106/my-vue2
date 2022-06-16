@@ -22,6 +22,14 @@
           firstName: "Foo",
           lastName: "Bar",
         },
+        watch: {
+          name: {
+            handler(newvalue, old) {
+              console.log("newvaluenewvalue==", newvalue);
+            },
+            immediate: true,
+          },
+        },
         template: `
         <div>
           <h1>{{name}}</h1>

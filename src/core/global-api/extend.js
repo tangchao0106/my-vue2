@@ -15,11 +15,21 @@ export function initExtend(Vue: GlobalAPI) {
 
   /**
    * Class inheritance
+   * 创建一个继承自Vue类的子类，可接收的参数是一个包含组件选项的对象。
    * 目的，定义子类构造函数，继承了父类的原型和属性
-   * {
-   * name:'',
-   * data:{},
-   * templeate:'<h2>对象 </h2>'
+// 创建构造器
+var Profile = Vue.extend({
+  template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+  data: function () {
+    return {
+      firstName: 'Walter',
+      lastName: 'White',
+
+    }
+  }
+})
+// 创建 Profile 实例，并挂载到一个元素上。
+new Profile().$mount('##mount-point')
    * }
    */
   Vue.extend = function (extendOptions: Object): Function {

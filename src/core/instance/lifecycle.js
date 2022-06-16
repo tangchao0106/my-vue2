@@ -87,6 +87,15 @@ export function lifecycleMixin(Vue: Class<Component>) {
     // updated in a parent's updated hook.
   };
 
+  // 修改了数据，但是页面层没有变动，说明数据本身是被修改了
+  // ，但是vue没有监听到而已，用$forceUpdate就相当于按照最新数据给渲染一下。
+  // this.list[index].sex = '男';
+  // this.$forceUpdate();
+
+  // this.list.length = 0;
+  // this.$forceUpdate();
+  // 增加一个属性或清空数组，使用 this.$set(this.list[index],'sex','男')方法或强制渲染
+
   Vue.prototype.$forceUpdate = function () {
     const vm: Component = this;
     if (vm._watcher) {
@@ -197,6 +206,7 @@ export function mountComponent(
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
+  //页面渲染watcher
   new Watcher(
     vm,
     updateComponent,
@@ -209,7 +219,7 @@ export function mountComponent(
       },
     },
     true /* isRenderWatcher */
-  ); //页面渲染watcher
+  );
   hydrating = false;
 
   // manually mounted instance, call mounted on self

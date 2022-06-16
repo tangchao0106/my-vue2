@@ -122,7 +122,7 @@ export function createPatchFunction(backend) {
   }
 
   let creatingElmInVPre = 0;
-
+  // 创建元素节点
   function createElm(
     vnode,
     insertedVnodeQueue,
@@ -216,6 +216,8 @@ export function createPatchFunction(backend) {
     let i = vnode.data;
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive;
+
+      // 得到 i 就是 组件 createComponent 的时候创建 init 钩子函数
       if (isDef((i = i.hook)) && isDef((i = i.init))) {
         i(vnode, false /* hydrating */);
       }

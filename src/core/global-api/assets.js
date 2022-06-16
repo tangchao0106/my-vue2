@@ -39,3 +39,28 @@ export function initAssetRegisters(Vue: GlobalAPI) {
 //   data() {},
 //   template: "<h2>注册全局组件</h2>",
 // });
+
+// 注册
+// Vue.directive('my-directive', {
+//   bind: function () {},
+//   inserted: function () {},
+//   update: function () {},
+//   componentUpdated: function () {},
+//   unbind: function () {}
+// })
+
+// // 注册 (指令函数)
+// Vue.directive('my-directive', function () {
+//   // 这里将会被 `bind` 和 `update` 调用
+// })
+
+// // getter，返回已注册的指令
+// var myDirective = Vue.directive('my-directive')
+
+// 注册
+// Vue.filter('my-filter', function (value) {
+//   // 返回处理后的值
+// })
+
+// // getter，返回已注册的过滤器
+// var myFilter = Vue.filter('my-filter')

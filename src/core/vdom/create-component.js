@@ -38,10 +38,12 @@ const componentVNodeHooks = {
       const mountedNode: any = vnode; // work around flow
       componentVNodeHooks.prepatch(mountedNode, mountedNode);
     } else {
+      //标记了_isComponent=true
       const child = (vnode.componentInstance = createComponentInstanceForVnode(
         vnode,
         activeInstance
       ));
+      //由于组件初始化的时候是不传 el 的  $mount 相当于执行 child.$mount(undefined, false)，继续走vue _init方法
       child.$mount(hydrating ? vnode.elm : undefined, hydrating);
     }
   },
@@ -181,7 +183,7 @@ export function createComponent(
   }
 
   // install component management hooks onto the placeholder node
-  //2 安装组件钩子函数
+  //2 安装组件钩子函数 init钩子函数，在patch时候触发
   installComponentHooks(data);
 
   // return a placeholder vnode

@@ -374,7 +374,7 @@ export function stateMixin(Vue: Class<Component>) {
 
   Vue.prototype.$set = set;
   Vue.prototype.$delete = del;
-
+  //最后返回一个取消观察函数unwatchFn，用来停止触发回调
   Vue.prototype.$watch = function (
     expOrFn: string | Function,
     cb: any,
@@ -395,7 +395,7 @@ export function stateMixin(Vue: Class<Component>) {
       popTarget();
     }
     return function unwatchFn() {
-      watcher.teardown();
+      watcher.teardown(); //拆卸
     };
   };
 }

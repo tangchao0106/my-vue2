@@ -53,7 +53,8 @@ export function initMixin(Vue: Class<Component>) {
     // expose real self
     vm._self = vm;
     initLifecycle(vm);
-    initEvents(vm);
+    initEvents(vm); //_events创建，给vm.$on..使用
+    //方法 createElement
     initRender(vm);
     callHook(vm, "beforeCreate");
     initInjections(vm); // resolve injections before data/props
