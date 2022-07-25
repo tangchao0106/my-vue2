@@ -8,3 +8,7 @@
 - git commit -m "-AST生成render函数后调用_c函数，_c('cpn')如果不是默认标签，则开始处理组件3步骤， createElement 调用时如果是组件，则解析组件，1extend方法返回构造函数-2 注册组件钩子init方法-3返回vnodepatch的时候触发init钩子，标记_isComponent 为 true 表示它是一个组件 继续子组件$mount。循环，子组件的实例化实际上就是在这个时机执行， " --no-verify
 
 - git commit -m "1全局api梳理 $forceUpdate 学习 $watch返回取消函数" --no-verify
+- git commit -m "
+因为HTML标签的属性名是大小写不敏感的，会被自动识别成小写
+因此无法在标签标签中使用驼峰命名，但js却可以使用驼峰命名
+为了解决这个冲突，Vue会在底层自动将短横线式等价为命名驼峰式，使用短横线命名在DOM模板中使用 " --no-verify
