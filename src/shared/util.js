@@ -158,6 +158,7 @@ export function cached<F: Function>(fn: F): F {
 
 /**
  * Camelize a hyphen-delimited string.
+ * 对连字符分隔的字符串进行骆驼化。
  */
 const camelizeRE = /-(\w)/g;
 export const camelize = cached((str: string): string => {
