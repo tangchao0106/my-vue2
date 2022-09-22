@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0726</title>
+    <script src="../../dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      111111
+      <!-- 使用组件 -->
+      <my-div color="red" title="我是一个div"></my-div>
+    </div>
+
+    <script type="text/javascript">
+      // 全局注册组件
+
+      Vue.component("MyDiv", {
+        template: `<div>2222222</div>`,
+      });
+      // 创建Vue实例
+      var vue = new Vue({
+        el: "#app", // 渲染的html元素
+        data: {
+          // 数据对象
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -446,14 +446,17 @@ export function resolveAsset(
   warnMissing?: boolean
 ): any {
   /* istanbul ignore if */
+
   if (typeof id !== "string") {
     return;
   }
   const assets = options[type];
   // check local registration variations first
   if (hasOwn(assets, id)) return assets[id];
+  // 短横线分隔命名
   const camelizedId = camelize(id);
   if (hasOwn(assets, camelizedId)) return assets[camelizedId];
+  // 首字母大写命名
   const PascalCaseId = capitalize(camelizedId);
   if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId];
   // fallback to prototype chain
