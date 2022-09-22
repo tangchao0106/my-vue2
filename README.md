@@ -12,3 +12,7 @@
 因为HTML标签的属性名是大小写不敏感的，会被自动识别成小写
 因此无法在标签标签中使用驼峰命名，但js却可以使用驼峰命名
 为了解决这个冲突，Vue会在底层自动将短横线式等价为命名驼峰式，使用短横线命名在DOM模板中使用 " --no-verify
+
+
+- git commit -m "vue2生命周期，合并策略梳理" --no-verify
+![生命周期合并策略梳理](https://github.com/tangchao0106/my-vue2/blob/main/study-images/vue2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%90%88%E5%B9%B6%E7%AD%96%E7%95%A5%20.png)

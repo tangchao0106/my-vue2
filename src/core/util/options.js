@@ -150,7 +150,7 @@ function mergeHook(
     : parentVal;
   return res ? dedupeHooks(res) : res;
 }
-
+// 重复数据消除
 function dedupeHooks(hooks) {
   const res = [];
   for (let i = 0; i < hooks.length; i++) {
