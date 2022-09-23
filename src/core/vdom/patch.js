@@ -931,7 +931,8 @@ export function createPatchFunction(backend) {
         }
       }
     }
-
+    // 对于组件的 mounted 触发的时机是在组件的 VNode patch 到 DOM 后，
+    // 会执⾏ invokeInsertHook 函数，把 insertedVnodeQueue ⾥保存的钩⼦函数依次执⾏⼀遍
     invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);
     return vnode.elm;
   };

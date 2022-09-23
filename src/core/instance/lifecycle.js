@@ -353,9 +353,12 @@ export function deactivateChildComponent(vm: Component, direct?: boolean) {
     callHook(vm, "deactivated");
   }
 }
-
+// 1在参数合并阶段会把所有同类钩子先合并成数组，然后存放在 vm.$options
+// 2初始化设置一些标志位，表明是否已经完成某种钩子;
+// 3调用生命周期钩子函数执行的 callHook 方法
 export function callHook(vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
+  // 首先 调用 pushTarget() 将 Dep.target 设置空，避免在某些生命周期钩子中使用 props 数据导致收集冗余的依赖；
   pushTarget();
   const handlers = vm.$options[hook];
   const info = `${hook} hook`;
@@ -364,6 +367,14 @@ export function callHook(vm: Component, hook: string) {
       invokeWithErrorHandling(handlers[i], vm, null, vm, info);
     }
   }
+
+  // callHook 方法最后拿到 _hasHookEvent 对象，
+  // 是在 initEvents 函数中定义的，它的作用是判断是否存在生命周期钩子的事件侦听器
+  // ，初始化值为 false 代表没有，
+  // 当组件检测到存在生命周期钩子的事件侦听器时，
+  // 会将 vm._hasHookEvent 设置为 true，
+  // 这个时候就会执行vm.$emit('hook:' + hook) 回调函数；
+
   if (vm._hasHookEvent) {
     vm.$emit("hook:" + hook);
   }

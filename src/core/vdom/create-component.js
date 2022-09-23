@@ -60,6 +60,13 @@ const componentVNodeHooks = {
     );
   },
 
+  //   在 insert 钩子函数被触发的时候，触发了组件的mounted方法，
+  // 因此组件的mounted生命周期是在VNode触发insert钩子函数的时候被调用的；
+
+  // 由于 insertedVnodeQueue 的添加顺序是先⼦后⽗，所以对于同步渲染的⼦组件⽽⾔，
+  //  mounted 钩 ⼦函数的执⾏顺序也是先⼦后⽗。
+
+  // insert触发时机在 （在组件的 VNode patch 到 DOM 后，会执⾏ invokeInsertHook 函数）
   insert(vnode: MountedComponentVNode) {
     const { context, componentInstance } = vnode;
     if (!componentInstance._isMounted) {

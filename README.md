@@ -13,6 +13,19 @@
 因此无法在标签标签中使用驼峰命名，但js却可以使用驼峰命名
 为了解决这个冲突，Vue会在底层自动将短横线式等价为命名驼峰式，使用短横线命名在DOM模板中使用 " --no-verify
 
-
+### 生命周期合并策略
 - git commit -m "vue2生命周期，合并策略梳理" --no-verify
 ![生命周期合并策略梳理](https://github.com/tangchao0106/my-vue2/blob/main/study-images/vue2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%90%88%E5%B9%B6%E7%AD%96%E7%95%A5%20.png)
+
+### 组件何时挂载？
+- 在组件的 VNode patch 到 DOM 后，在patch.js  会执⾏ invokeInsertHook 函数
+- 执行invokeInsertHook函数。触发insert 钩子函数被触发的时候，触发了组件的mounted方法，因此组件的mounted生命周期是在VNode触发insert钩子函数的时候被调用的；代码位置 create-component.js
+- 触发mounted钩子 callHook(componentInstance, "mounted");`开始遍历同类型的钩子`。
+####  [生命周期合并策略](https://tangchao0106.github.io/tc-blog/vuebook/vue2%E6%BA%90%E7%A0%81%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%90%88%E5%B9%B6%E7%AD%96%E7%95%A5%E6%A2%B3%E7%90%86.html)
+- 1在参数合并阶段会把所有同类钩子先合并成数组，然后存放在 vm.$options
+  - 由于 insertedVnodeQueue 的添加顺序是先⼦后⽗，所以对于同步渲染的⼦组件⽽⾔，mounted 钩 ⼦函数的执⾏顺序也是先⼦后⽗
+- 2初始化设置一些标志位，表明是否已经完成某种钩子;
+- 3调用生命周期钩子函数执行的 callHook 方法
+- 4当组件检测到存在生命周期钩子的事件侦听器时，这个时候就会执行vm.$emit('hook:' + hook) 回调函数
+
+
