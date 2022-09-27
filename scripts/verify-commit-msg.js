@@ -1,3 +1,5 @@
+console.log("11msg===");
+
 const chalk = require("chalk");
 const msgPath = process.env.GIT_PARAMS;
 const msg = require("fs").readFileSync(msgPath, "utf-8").trim();
