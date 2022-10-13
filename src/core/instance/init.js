@@ -57,6 +57,7 @@ export function initMixin(Vue: Class<Component>) {
     //方法 createElement
     initRender(vm);
     callHook(vm, "beforeCreate");
+    // inject 配置项是注入数据，在后续的 computed 和 data 中均可以或需要使用注入数据，故解析 injections 需要在 data/props 前
     initInjections(vm); // resolve injections before data/props
     initState(vm);
     initProvide(vm); // resolve provide after data/props
