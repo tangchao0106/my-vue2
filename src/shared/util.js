@@ -127,6 +127,7 @@ export const isReservedAttribute = makeMap("key,ref,slot,slot-scope,is");
 
 /**
  * Remove an item from an array.
+ * $destroy 方法删除自己与父级之间的连接
  */
 export function remove(arr: Array<any>, item: any): Array<any> | void {
   if (arr.length) {
